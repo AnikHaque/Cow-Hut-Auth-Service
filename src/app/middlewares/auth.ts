@@ -23,12 +23,13 @@ export const auth =
       verifiedUser = verifyToken(token, config.jwt.secret as Secret);
 
       req.user = verifiedUser;
-      
+
       //   role guard
       const {userId, role} = verifiedUser;
       if (roles.length > 0 && !roles.includes(role)) {
         throw new ApiError(httpStatus.FORBIDDEN, "Request Forbidden");
       }
+
       //cow seller validation
       if (document === "cow" && req.params.id) {
         const validateSeller = await validateCowSeller(req.params.id, userId);
@@ -36,6 +37,7 @@ export const auth =
           throw new ApiError(httpStatus.FORBIDDEN, "Request Forbidden. You can't access this cow!");
         }
       }
+      
       //seller and buyer of orders validation
       if (document === "order" && req.params.id) {
         const validateCowOrder = await validateOrder(req.params.id, userId);
