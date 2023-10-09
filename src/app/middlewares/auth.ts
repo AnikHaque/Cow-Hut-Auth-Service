@@ -18,11 +18,12 @@ export const auth =
       if (!token) {
         throw new ApiError(httpStatus.UNAUTHORIZED, "You are not authorized");
       }
-      
+
       //verify token
       verifiedUser = verifyToken(token, config.jwt.secret as Secret);
 
       req.user = verifiedUser;
+      
       //   role guard
       const {userId, role} = verifiedUser;
       if (roles.length > 0 && !roles.includes(role)) {
